@@ -146,6 +146,8 @@ export default function AiChat() {
   const closeModal = useCallback(() => {
     setIsOpen(false);
     setIsVoiceCallActive(false);
+    voiceCallActiveRef.current = false;
+    abortRef.current?.abort();
     if (recognitionRef.current) recognitionRef.current.stop();
     window.speechSynthesis?.cancel();
     setIsSpeaking(false);
@@ -290,14 +292,26 @@ export default function AiChat() {
         const userText = lastResult[0].transcript.trim();
         setVoiceTranscript(userText);
 
+        // Handle spoken stop commands gracefully
+        const lowerText = userText.toLowerCase().replace(/[^\w\s]/g, '');
+        if (['stop', 'stop talking', 'stop call', 'end call', 'quit', 'exit', 'shut up', 'pause'].includes(lowerText)) {
+          window.speechSynthesis?.cancel();
+          abortRef.current?.abort();
+          setIsSpeaking(false);
+          speakText("Alright, I've stopped. Let me know if you need anything else!");
+          return;
+        }
+
         // Send to API and speak back
         (async () => {
           try {
+            abortRef.current = new AbortController();
             setIsSpeaking(true);
             const res = await fetch('/api/chat', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ messages: [], userMessage: userText }),
+              signal: abortRef.current.signal,
             });
 
             if (!res.ok) {
@@ -359,6 +373,7 @@ export default function AiChat() {
   const endVoiceCall = useCallback(() => {
     setIsVoiceCallActive(false);
     voiceCallActiveRef.current = false;
+    abortRef.current?.abort();
     if (recognitionRef.current) {
       try { recognitionRef.current.stop(); } catch (e) { /* ignore */ }
       recognitionRef.current = null;
