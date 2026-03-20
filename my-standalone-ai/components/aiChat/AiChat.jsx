@@ -426,7 +426,7 @@ export default function AiChat() {
       setMessages((prev) =>
         prev.map((m) =>
           m.id === aiMsgId
-            ? { ...m, content: '⚠️ ' + (err.message || 'Something went wrong. Try again.'), streaming: false }
+            ? { ...m, content: '<span style="color: #ff8787; font-weight: 500;">⚠️ ' + (err.message || 'System error detected. Please try again.') + '</span>', streaming: false }
             : m
         )
       );
@@ -508,7 +508,7 @@ export default function AiChat() {
                 )}
                 <span className={styles.topBarTitle}>
                   {view === 'intro' && (
-                    <span className={styles.disclaimer}>Powered by AI & built by me. Responses may not be perfectly accurate</span>
+                    <span className={styles.disclaimer}>Powered by AI & built by me.</span>
                   )}
                   {view === 'chat' && (
                     <>Chat with Gaurav&apos;s AI</>
@@ -696,20 +696,27 @@ export default function AiChat() {
 
                   {/* Suggestions */}
                   {messages.length <= 1 && (
-                    <div className={styles.suggestions}>
-                      {SUGGESTIONS.map((s) => (
+                    <motion.div 
+                      className={styles.suggestions}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                    >
+                      {SUGGESTIONS.map((s, i) => (
                         <motion.button
                           key={s}
                           className={styles.suggestionChip}
                           onClick={() => sendMessage(s)}
                           disabled={isLoading}
-                          whileHover={{ scale: 1.03, borderColor: 'rgba(255,255,255,0.4)' }}
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 + (i * 0.08), duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                          whileHover={{ scale: 1.03, borderColor: 'rgba(255,255,255,0.4)', backgroundColor: 'rgba(255,255,255,0.08)' }}
                           whileTap={{ scale: 0.97 }}
                         >
                           {s}
                         </motion.button>
                       ))}
-                    </div>
+                    </motion.div>
                   )}
 
                   {/* Input */}
