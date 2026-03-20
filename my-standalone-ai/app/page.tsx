@@ -20,7 +20,7 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-center bg-black text-white selection:bg-white/20">
+    <main className="relative min-h-screen w-full flex flex-col items-center justify-center bg-black text-white selection:bg-white/20 overflow-x-hidden">
       {/* Background Effects */}
       <div className="bg-noise mix-blend-overlay"></div>
 

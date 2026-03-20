@@ -152,6 +152,10 @@
   align-items: center;
   justify-content: center;
   padding: 40px 32px;
+
+  @media (max-width: 480px) {
+    padding: 32px 16px;
+  }
 }
 
 .introContent {
@@ -238,6 +242,16 @@
   align-items: center;
   gap: 12px;
   margin-top: 28px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    width: 100%;
+    
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
 }
 
 .btnPrimary {
