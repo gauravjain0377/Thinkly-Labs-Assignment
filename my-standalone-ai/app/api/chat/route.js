@@ -1,6 +1,6 @@
 import { GAURAV_KNOWLEDGE_BASE } from './knowledgeBase';
 
-// ─── Rate Limiting ────────────────────────────────────────────────────────────
+// Rate Limiting
 const rateLimitMap = new Map();
 const RATE_LIMIT = 20;
 const RATE_WINDOW = 60 * 1000;
@@ -17,7 +17,7 @@ function checkRateLimit(ip) {
   return true;
 }
 
-// ─── OpenAI Handler ──────────────────────────────────────────────────────────
+// OpenAI Handler
 async function callOpenAI(messages, userMessage) {
   const OpenAI = (await import('openai')).default;
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });

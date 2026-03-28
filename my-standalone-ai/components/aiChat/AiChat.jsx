@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './AiChat.module.scss';
 
-// ─── Suggested quick questions ────────────────────────────────────────────────
+// Suggested quick questions
 const SUGGESTIONS = [
   'Tell me about Gaurav',
   'What projects have you built?',
@@ -12,7 +12,7 @@ const SUGGESTIONS = [
   'How can I hire you?',
 ];
 
-// ─── Simple markdown-ish renderer ────────────────────────────────────────────
+// Simple markdown-ish renderer
 function renderContent(text) {
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -21,7 +21,7 @@ function renderContent(text) {
     .replace(/\n/g, '<br/>');
 }
 
-// ─── Modal Variants ──────────────────────────────────────────────────────────
+// Modal Variants
 const backdropVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.3, ease: 'easeOut' } },
